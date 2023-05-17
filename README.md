@@ -2,8 +2,6 @@
 
 ## Modelo Entidade-Relacionamento Estendido:
 
-[e-commerce_model.pdf](https://github.com/bccalegari/mysql_e-commerce_database/blob/main/e_commerce_model.pdf)
-![e-commerce_model](https://user-images.githubusercontent.com/109561086/229379181-c9ff90b6-80c5-412c-8624-b79beae033f0.png)
 
 ### Entidades: 
 
