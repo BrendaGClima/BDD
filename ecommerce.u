@@ -1,0 +1,200 @@
+CREATE TABLE Login 
+( 
+ Id INT PRIMARY KEY AUTO_INCREMENT,  
+ Nome: INT,  
+ email INT,  
+ senha INT,  
+ Salt VARCHAR(n) PRIMARY KEY,  
+ UNIQUE (email,senha,Salt)
+); 
+
+CREATE TABLE Cliente 
+( 
+ idLogin INT,  
+ idNome INT,  
+ Idade INT,  
+ id VARCHAR(n) PRIMARY KEY AUTO_INCREMENT,  
+ sobrenome VARCHAR(n),  
+ sexo INT,  
+ telefone VARCHAR(n) NOT NULL,  
+); 
+
+CREATE TABLE Cartao 
+( 
+ Id INT PRIMARY KEY AUTO_INCREMENT,  
+ num_cart VARCHAR(n),  
+ nome_cartão VARCHAR(n),  
+ data_expiração VARCHAR(n),  
+ bandeira VARCHAR(n),  
+ salt INT,  
+ idCliente INT,  
+ UNIQUE (num_cart,salt)
+); 
+
+CREATE TABLE cliente_tem_cartao 
+( 
+ idCliente INT PRIMARY KEY,  
+ idCartão INT PRIMARY KEY,  
+); 
+
+CREATE TABLE Pagamento 
+( 
+ idclirntr_tem_cartao INT,  
+ id VARCHAR(n) PRIMARY KEY AUTO_INCREMENT,  
+ idBoleto INT,  
+ parcelado INT,  
+ qtd_parcela INT AUTO_INCREMENT,  
+ pag_confirmado INT,  
+ data_pag_confirmado INT,  
+); 
+
+CREATE TABLE Boleto 
+( 
+ idCliente INT,  
+ Id INT PRIMARY KEY AUTO_INCREMENT,  
+ emissao VARCHAR(n),  
+ numero VARCHAR(n),  
+ data_pagamento INT,  
+ valor INT,  
+ UNIQUE (numero)
+); 
+
+CREATE TABLE Produto 
+( 
+ Id INT PRIMARY KEY AUTO_INCREMENT,  
+ nome_produto INT,  
+ descricao VARCHAR(n),  
+ valor FLOAT,  
+ data_ativacao VARCHAR(n),  
+ idPedido INT,  
+ idCategoria INT,  
+ ProdutoStatus INT,  
+ dataDesativacao DATE NOT NULL,  
+); 
+
+CREATE TABLE Pedido 
+( 
+ idCliente INT,  
+ idPagamento INT,  
+ PedidoStatus CHAR(n),  
+); 
+
+CREATE TABLE nota_fiscal 
+( 
+ idPagamento INT,  
+ id INT PRIMARY KEY AUTO_INCREMENT,  
+ dataEmissao VARCHAR(n),  
+ numNota VARCHAR(n),  
+ valorNota FLOAT,  
+); 
+
+CREATE TABLE pedidoTemProduto 
+( 
+ idPedido INT,  
+ idProduto INT,  
+ qtd INT,  
+ id INT PRIMARY KEY AUTO_INCREMENT,  
+ desconto VARCHAR(n) AUTO_INCREMENT,  
+ valorDesconto INT,  
+); 
+
+CREATE TABLE Status 
+( 
+ EntregaStatus CHAR(n) NOT NULL,  
+ PagamentoStatus CHAR(n) NOT NULL,  
+ PedidoStatus CHAR(n),  
+ IdCliente INT,  
+ idEntrega INT,  
+ idPagamento INT,  
+ ProdutoStatus INT NOT NULL,  
+); 
+
+CREATE TABLE Fornecedoras 
+( 
+ IdFornecedor INT PRIMARY KEY AUTO_INCREMENT,  
+ RazaoSocial VARCHAR(n) NOT NULL,  
+ idEndereco INT,  
+ idProdutoCategoria INT,  
+ idnota_fiscal INT,  
+ UNIQUE (RazaoSocial)
+); 
+
+CREATE TABLE Entrega 
+( 
+ IdEntrega INT PRIMARY KEY AUTO_INCREMENT,  
+ EntregaStatus INT,  
+ CodigoRastreio INT,  
+ DataEntregaInicio DATE NOT NULL,  
+ DataEntregaFim DATE,  
+ ValorFrete FLOAT NOT NULL,  
+ EntregaConcluida CHAR(n) NOT NULL,  
+ DataEntregaPrevisao DATE NOT NULL,  
+ telefoneCliente INT,  
+ idEndereco INT,  
+ idtransportadores INT,  
+ UNIQUE (CodigoRastreio)
+); 
+
+CREATE TABLE Endereco 
+( 
+ IdEndereco INT PRIMARY KEY AUTO_INCREMENT,  
+ Estado CHAR(n) NOT NULL,  
+ Cidade CHAR(n) NOT NULL,  
+ Bairro CHAR(n) NOT NULL,  
+ Rua VARCHAR(n) NOT NULL,  
+ Numero INT NOT NULL,  
+ CEP VARCHAR(n) NOT NULL,  
+ Complemento VARCHAR(n),  
+ idCliente INT,  
+); 
+
+CREATE TABLE ProdutoCategoria 
+( 
+ IdCategoria INT PRIMARY KEY AUTO_INCREMENT,  
+ categoria VARCHAR(n) NOT NULL,  
+ datacriacao DATE,  
+ descricao VARCHAR(n),  
+); 
+
+CREATE TABLE transportadores 
+( 
+ idTransportador INT PRIMARY KEY AUTO_INCREMENT,  
+ idFornecedoras INT,  
+ idEndereco INT,  
+ idnota_fiscal INT,  
+); 
+
+ALTER TABLE Cliente ADD FOREIGN KEY(idNome) REFERENCES Login (idNome)
+ALTER TABLE Cartao ADD FOREIGN KEY(idCliente) REFERENCES Cliente (idCliente)
+ALTER TABLE cliente_tem_cartao ADD FOREIGN KEY(idCliente) REFERENCES Cliente (idCliente)
+ALTER TABLE cliente_tem_cartao ADD FOREIGN KEY(idCartão) REFERENCES Cartao (idCartão)
+ALTER TABLE Pagamento ADD FOREIGN KEY(idclirntr_tem_cartao) REFERENCES cliente_tem_cartao (idclirntr_tem_cartao)
+ALTER TABLE Pagamento ADD FOREIGN KEY(idBoleto) REFERENCES Boleto (idBoleto)
+ALTER TABLE Boleto ADD FOREIGN KEY(idCliente) REFERENCES Cliente (idCliente)
+ALTER TABLE Produto ADD FOREIGN KEY(idPedido) REFERENCES Pedido (idPedido)
+ALTER TABLE Produto ADD FOREIGN KEY(idCategoria) REFERENCES ProdutoCategoria (idCategoria)
+ALTER TABLE Produto ADD FOREIGN KEY(ProdutoStatus) REFERENCES Status (ProdutoStatus)
+ALTER TABLE Pedido ADD FOREIGN KEY(idCliente) REFERENCES Cliente (idCliente)
+ALTER TABLE Pedido ADD FOREIGN KEY(idPagamento) REFERENCES Pagamento (idPagamento)
+ALTER TABLE Pedido ADD FOREIGN KEY(PedidoStatus) REFERENCES Status (PedidoStatus)
+ALTER TABLE nota_fiscal ADD FOREIGN KEY(idPagamento) REFERENCES Pagamento (idPagamento)
+ALTER TABLE pedidoTemProduto ADD FOREIGN KEY(idPedido) REFERENCES Pedido (idPedido)
+ALTER TABLE pedidoTemProduto ADD FOREIGN KEY(idProduto) REFERENCES Produto (idProduto)
+ALTER TABLE Status ADD FOREIGN KEY(idEntrega) REFERENCES Entrega (idEntrega)
+ALTER TABLE Status ADD FOREIGN KEY(idPagamento) REFERENCES Pagamento (idPagamento)
+ALTER TABLE Fornecedoras ADD FOREIGN KEY(idEndereco) REFERENCES Endereco (idEndereco)
+ALTER TABLE Fornecedoras ADD FOREIGN KEY(idProdutoCategoria) REFERENCES ProdutoCategoria (idProdutoCategoria)
+ALTER TABLE Fornecedoras ADD FOREIGN KEY(idnota_fiscal) REFERENCES nota_fiscal (idnota_fiscal)
+ALTER TABLE Entrega ADD FOREIGN KEY(EntregaStatus) REFERENCES Status (EntregaStatus)
+ALTER TABLE Entrega ADD FOREIGN KEY(telefoneCliente) REFERENCES Cliente (telefoneCliente)
+ALTER TABLE Entrega ADD FOREIGN KEY(idEndereco) REFERENCES Endereco (idEndereco)
+ALTER TABLE Entrega ADD FOREIGN KEY(idtransportadores) REFERENCES transportadores (idtransportadores)
+ALTER TABLE Endereco ADD FOREIGN KEY(idCliente) REFERENCES Cliente (idCliente)
+ALTER TABLE ProdutoCategoria ADD FOREIGN KEY(IdCategoria) REFERENCES Produto (IdCategoria)
+ALTER TABLE transportadores ADD FOREIGN KEY(idFornecedoras) REFERENCES Fornecedoras (idFornecedoras)
+ALTER TABLE transportadores ADD FOREIGN KEY(idEndereco) REFERENCES Endereco (idEndereco)
+ALTER TABLE transportadores ADD FOREIGN KEY(idnota_fiscal) REFERENCES nota_fiscal (idnota_fiscal)
+
+CREATE VIEW View AS 
+SELECT Login.Nome, Login.email, Login.senha, Cliente.Idade, Cliente.sobrenome, Cliente.sexo
+FROM Login
