@@ -1,6 +1,8 @@
 # Projeto de Banco de Dados: E-Commerce
 
-## Modelo Entidade-Relacionamento Estendido:
+## Modelo Entidade-Relacionamento:
+##Modelo légico: 
+->[ file:///C:/Users/brenda.lima/Downloads/Logic%20model%20-%20BRMW.pdf ]
 
 
 ### Dados:
