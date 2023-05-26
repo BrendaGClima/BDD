@@ -5,6 +5,8 @@
 ->[ file:///C:/Users/brenda.lima/Downloads/Logic%20model%20-%20BRMW.pdf ]
 ### Código:
 ->[ https://github.com/BrendaGClima/BDD/commit/3f81ea20dd00be7148abe99188dfce359949acaa ]
+### Vídeo:
+https://drive.google.com/file/d/1xOejE8uDfH0_U-OMjqh_Ttwx5Jd9pJoV/view?resourcekey
 
 
 ### Dados:
